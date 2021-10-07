@@ -13,11 +13,12 @@ wn.bgpic('background.gif')
 # trt.register_shape('')
 trt.register_shape('player.gif')
 trt.register_shape('bullet.gif')
+trt.register_shape('enemy.gif')
 
 test = trt.Turtle()
 test.pu()
 test.color('red')
-test.setposition(90 , 0)
+test.setposition(90 ,320)
 
 player = trt.Turtle()
 player.color("blue")
@@ -25,14 +26,13 @@ player.shape("player.gif")
 player.penup()
 player.speed(0)
 player.setposition(-500, 150)
-player.setheading(90)
+player.setheading(0)
 
 
 
 playerSpeed = 50
 
 bullet = trt.Turtle()
-bullet.color('orange')
 bullet.shape("bullet.gif")
 bullet.penup()
 bullet.speed(0)
@@ -41,11 +41,10 @@ bullet.shapesize(0.5,0.5)
 bullet.hideturtle()
 
 ebullet = trt.Turtle()
-ebullet.color('red')
 ebullet.shape('bullet.gif')
 ebullet.pu()
 ebullet.speed(0)
-ebullet.setheading(90)
+ebullet.setheading(180)
 ebullet.hideturtle()
 
 
@@ -63,16 +62,16 @@ for i in range(number_of_enemies):
 
 for enemy in enemies:
     #enemy.color("Red")
-    enemy.shape("triangle")
+    enemy.shape("enemy.gif")
     enemy.color('red')
     enemy.rt(180)
     enemy.penup()
     enemy.speed(0)
-    x = random.randint(110, 400)
-    y =  random.randint(0, 320 )
+    x = random.randint(50, 400)
+    y =  random.randint(50, 200 )
     enemy.setposition(x, y)
 
-enemyspeed = 5
+enemyspeed = 7
 
 
 def move_left():
@@ -108,7 +107,7 @@ def move_down():
     
     
     
-bulletSpeed = 30
+bulletSpeed = 10
 bulletstate = 'ready'
 ebulletstate = 'eready'
     
@@ -161,15 +160,34 @@ while True:
         x = enemy.xcor()            # moving the enemy
         x += enemyspeed
         enemy.setx(x)
-        # print(x)
-
-
+        
     
-        if enemy.xcor() > 560:
+        if enemy.xcor() > 530:
+            for x in enemies:
+                y = x.ycor()
+                y -= random.randint(0, 20)
+                x.sety(y)
+                
             enemyspeed *= -1
         
         if enemy.xcor() < 110:
+            for x in enemies:
+                y = x.ycor()
+                y += random.randint(0, 40)
+                x.sety(y)
+                
             enemyspeed *= -1
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
 
     if bulletstate == "fire":           # moving the bullet
@@ -183,20 +201,20 @@ while True:
         bullet.hideturtle()
         bulletstate = "ready"
         
-        
-    enemy_bullet()                      # calling the function to initiate the enemy bullet
-        
-    if ebulletstate == "efire":
-        y = ebullet.xcor()
-        y -= bulletSpeed
-        # ebullet.speed(8)
-        ebullet.setx(y)
+    for enemy in enemies:
+        enemy_bullet()                      # calling the function to initiate the enemy bullet
+            
+        if ebulletstate == "efire":
+            y = ebullet.xcor()
+            y -= bulletSpeed
+            # ebullet.speed(8)
+            ebullet.setx(y)
 
 
-    if ebullet.xcor() < -500:
-        ebullet.hideturtle()                    # checking the position of bulletf
-        ebulletstate = "eready"
-        
+        if ebullet.xcor() < -500:
+            ebullet.hideturtle()                    # checking the position of bulletf
+            ebulletstate = "eready"
+            
 
 
 trt.done()
